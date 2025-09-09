@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Tracker App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Budget Tracker App</h1>
+    <div id="transactions">
+        <table>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Transaction Type</th>
+                    <th>Essential Expense</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Description</td>
+                    <td>Amount</td>
+                    <td>Category</td>
+                    <td>Transaction Type</td>
+                    <td>Essential Expense</td>
+                    <td>Date</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <form id="create-transaction-form">
+        <h2>Add Transaction</h2>
+        <input type="text" id="description" name="description" placeholder="Description" required>
+        <input type="number" id="amount" name="amount" placeholder="Amount" step="0.01" required>
+        <input type="text" id="category" name="category" placeholder="Category" required>
+        <select id="transaction-type" name="transaction_type" required>
+            <option value="">Select Transaction Type</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+        <div class="checkbox-container">
+            <input type="checkbox" id="essential-expense" name="essential_expense">
+            <label for="essential-expense">Essential Expense</label>
+        </div>
+        <input type="date" id="date" name="date" required>
+        <button type="submit">Create Transaction</button>
+        <button type="button" id="refresh-btn">Refresh Transactions</button>
+    </form>
+
+    <script type="module" src="scripts.js"></script>
+</body>
+</html>
