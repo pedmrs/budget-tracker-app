@@ -24,13 +24,23 @@ export const populateTransactionsTable = (transactions) => {
                 <td>${transaction.transaction_type || 'N/A'}</td>
                 <td>${transaction.essential_expense ? 'Yes' : 'No'}</td>
                 <td>${transaction.date || 'N/A'}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm delete-transaction" data-id="${transaction.id}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
             `;
             tbody.appendChild(row);
+
+            const deleteButton = row.querySelector('.delete-transaction');
+            if (deleteButton) {
+                deleteButton.addEventListener('click', () => handleDeleteTransaction(transaction.id));
+            }
         });
     } else {
         const row = document.createElement('tr');
         const cell = document.createElement('td');
-        cell.colSpan = 6;
+        cell.colSpan = 7;
         cell.className = 'text-center text-muted py-3';
         cell.textContent = 'No transactions found';
         row.appendChild(cell);
@@ -123,7 +133,7 @@ export const loadTransactions = async () => {
             const tbody = document.querySelector('.table tbody');
             const row = document.createElement('tr');
             const cell = document.createElement('td');
-            cell.colSpan = 6;
+            cell.colSpan = 7;
             cell.className = 'text-center text-danger py-3';
             cell.textContent = `API Error: ${transactionsResponse.error}`;
             row.appendChild(cell);
@@ -133,7 +143,7 @@ export const loadTransactions = async () => {
             const tbody = document.querySelector('.table tbody');
             const row = document.createElement('tr');
             const cell = document.createElement('td');
-            cell.colSpan = 6;
+            cell.colSpan = 7;
             cell.className = 'text-center text-danger py-3';
             cell.textContent = 'Unexpected response format from API';
             row.appendChild(cell);
@@ -155,12 +165,40 @@ export const loadTransactions = async () => {
         const tbody = document.querySelector('.table tbody');
         const row = document.createElement('tr');
         const cell = document.createElement('td');
-        cell.colSpan = 6;
+        cell.colSpan = 7;
         cell.className = 'text-center text-danger py-3';
         cell.textContent = `Error loading transactions: ${error.message}. Please check if the API is running on http://localhost:5000`;
         row.appendChild(cell);
         tbody.innerHTML = '';
         tbody.appendChild(row);
+    }
+}
+
+export const deleteTransaction = async (transactionId) => {
+    const response = await fetch(`http://localhost:5000/transactions/${transactionId}`, {
+        method: 'DELETE',
+    });
+    const data = await response.json();
+    return data;
+}
+
+export const handleDeleteTransaction = async (transactionId) => {
+    if (!confirm('Are you sure you want to delete this transaction?')) {
+        return;
+    }
+
+    try {
+        const response = await deleteTransaction(transactionId);
+
+        if (response && response.success) {
+            showMessage('Transaction deleted successfully!', 'success');
+            await loadTransactions();
+        } else {
+            showMessage(`Error: ${response.error || 'Failed to delete transaction'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error deleting transaction:', error);
+        showMessage(`Error: ${error.message}`, 'error');
     }
 }
 
