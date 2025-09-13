@@ -8,70 +8,86 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <h1>Budget Tracker App</h1>
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Income vs Expenses</h5>
-                    <canvas id="incomeExpenseChart"></canvas>
+<body class="bg-light">
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Budget Tracker App</h1>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Income vs Expenses</h5>
+                        <canvas id="incomeExpenseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Expenses by Category</h5>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Expenses by Category</h5>
-                    <canvas id="categoryChart"></canvas>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Category</th>
+                                <th>Transaction Type</th>
+                                <th>Essential Expense</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="transactions">
-        <table>
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Category</th>
-                    <th>Transaction Type</th>
-                    <th>Essential Expense</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Description</td>
-                    <td>Amount</td>
-                    <td>Category</td>
-                    <td>Transaction Type</td>
-                    <td>Essential Expense</td>
-                    <td>Date</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <form id="create-transaction-form">
-        <h2>Add Transaction</h2>
-        <input type="text" id="description" name="description" placeholder="Description" required>
-        <input type="number" id="amount" name="amount" placeholder="Amount" step="0.01" required>
-        <input type="text" id="category" name="category" placeholder="Category" required>
-        <select id="transaction-type" name="transaction_type" required>
-            <option value="">Select Transaction Type</option>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-        </select>
-        <div class="checkbox-container">
-            <input type="checkbox" id="essential-expense" name="essential_expense">
-            <label for="essential-expense">Essential Expense</label>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title mb-4">Add Transaction</h2>
+                <form id="create-transaction-form" class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount" step="0.01" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="category" name="category" placeholder="Category" required>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" id="transaction-type" name="transaction_type" required>
+                            <option value="">Select Transaction Type</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="essential-expense" name="essential_expense">
+                            <label class="form-check-label" for="essential-expense">Essential Expense</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <div class="col-12 d-flex gap-2">
+                        <button type="submit" class="btn btn-success">Create Transaction</button>
+                        <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Transactions</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <input type="date" id="date" name="date" required>
-        <button type="submit">Create Transaction</button>
-        <button type="button" id="refresh-btn">Refresh Transactions</button>
-    </form>
+    </div>
 
     <script type="module" src="scripts.js"></script>
 </body>

@@ -11,9 +11,9 @@ export const fetchTransactionSummary = async () => {
 }
 
 export const populateTransactionsTable = (transactions) => {
-    const tbody = document.querySelector('#transactions tbody');
+    const tbody = document.querySelector('.table tbody');
     tbody.innerHTML = '';
-    
+
     if (transactions && transactions.length > 0) {
         transactions.forEach(transaction => {
             const row = document.createElement('tr');
@@ -29,7 +29,11 @@ export const populateTransactionsTable = (transactions) => {
         });
     } else {
         const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="6">No transactions found</td>';
+        const cell = document.createElement('td');
+        cell.colSpan = 6;
+        cell.className = 'text-center text-muted py-3';
+        cell.textContent = 'No transactions found';
+        row.appendChild(cell);
         tbody.appendChild(row);
     }
 }
@@ -116,15 +120,31 @@ export const loadTransactions = async () => {
         if (transactionsResponse && transactionsResponse.success && transactionsResponse.data) {
             populateTransactionsTable(transactionsResponse.data);
         } else if (transactionsResponse && transactionsResponse.success === false) {
-            const tbody = document.querySelector('#transactions tbody');
-            tbody.innerHTML = `<tr><td colspan="6" class="error-message">API Error: ${transactionsResponse.error}</td></tr>`;
+            const tbody = document.querySelector('.table tbody');
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 6;
+            cell.className = 'text-center text-danger py-3';
+            cell.textContent = `API Error: ${transactionsResponse.error}`;
+            row.appendChild(cell);
+            tbody.innerHTML = '';
+            tbody.appendChild(row);
         } else {
-            const tbody = document.querySelector('#transactions tbody');
-            tbody.innerHTML = '<tr><td colspan="6" class="error-message">Unexpected response format from API</td></tr>';
+            const tbody = document.querySelector('.table tbody');
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 6;
+            cell.className = 'text-center text-danger py-3';
+            cell.textContent = 'Unexpected response format from API';
+            row.appendChild(cell);
+            tbody.innerHTML = '';
+            tbody.appendChild(row);
         }
 
         if (summaryResponse && summaryResponse.success && summaryResponse.data) {
             await renderCharts(summaryResponse.data);
+        } else {
+            console.error('Error loading summary:', summaryResponse);
         }
     } catch (error) {
         console.error('Error details:', {
@@ -132,8 +152,15 @@ export const loadTransactions = async () => {
             message: error.message,
             stack: error.stack
         });
-        const tbody = document.querySelector('#transactions tbody');
-        tbody.innerHTML = `<tr><td colspan="6" class="error-message">Error loading transactions: ${error.message}. Please check if the API is running on http://localhost:5000</td></tr>`;
+        const tbody = document.querySelector('.table tbody');
+        const row = document.createElement('tr');
+        const cell = document.createElement('td');
+        cell.colSpan = 6;
+        cell.className = 'text-center text-danger py-3';
+        cell.textContent = `Error loading transactions: ${error.message}. Please check if the API is running on http://localhost:5000`;
+        row.appendChild(cell);
+        tbody.innerHTML = '';
+        tbody.appendChild(row);
     }
 }
 
@@ -194,7 +221,7 @@ export const showMessage = (message, type) => {
     messageDiv.textContent = message;
 
     const form = document.querySelector('#create-transaction-form');
-    form.appendChild(messageDiv);
+    form.closest('.card-body').insertBefore(messageDiv, form);
 
     setTimeout(() => {
         if (messageDiv.parentNode) {
