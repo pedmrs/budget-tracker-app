@@ -1,136 +1,255 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budget Tracker App</title>
+    <title>Budget Tracker App - Gerencie suas finanças</title>
+    <meta name="description" content="Controle suas receitas e despesas com nosso aplicativo completo de gestão financeira">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="src/styles/styles.css">
 </head>
 <body class="bg-light">
-    <div class="container py-4">
-        <h1 class="text-center mb-4">Budget Tracker App</h1>
+    <a href="#main-content" class="visually-hidden-focusable btn btn-primary position-absolute" style="top: 10px; left: 10px; z-index: 9999;">
+        Pular para o conteúdo principal
+    </a>
 
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Income vs Expenses</h5>
-                        <canvas id="incomeExpenseChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">Expenses by Category</h5>
-                        <canvas id="categoryChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <header class="container py-4">
+        <h1 class="text-center mb-0">Budget Tracker App</h1>
+        <p class="text-center text-muted mt-2">Gerencie suas finanças de forma simples</p>
+    </header>
 
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-success">
-                            <tr>
-                                <th>Description</th>
-                                <th>Amount</th>
-                                <th>Category</th>
-                                <th>Transaction Type</th>
-                                <th>Essential Expense</th>
-                                <th>Date</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h2 class="card-title mb-4">Add Transaction</h2>
-                <form id="create-transaction-form" class="row g-3">
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Description" required>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="number" class="form-control" id="amount" name="amount" placeholder="Amount" step="0.01" required>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" id="category" name="category" placeholder="Category" required>
-                    </div>
-                    <div class="col-md-6">
-                        <select class="form-select" id="transaction-type" name="transaction_type" required>
-                            <option value="">Select Transaction Type</option>
-                            <option value="income">Income</option>
-                            <option value="expense">Expense</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="essential-expense" name="essential_expense">
-                            <label class="form-check-label" for="essential-expense">Essential Expense</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <input type="date" class="form-control" id="date" name="date" required>
-                    </div>
-                    <div class="col-12 d-flex gap-2">
-                        <button type="submit" class="btn btn-success">Create Transaction</button>
-                        <button type="button" id="refresh-btn" class="btn btn-primary">Refresh Transactions</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="editTransactionModal" tabindex="-1" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editTransactionModalLabel">Edit Transaction</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-transaction-form" class="row g-3">
-                        <input type="hidden" id="edit-transaction-id">
-                        <div class="col-12">
-                            <input type="text" class="form-control" id="edit-description" name="description" placeholder="Description" required>
-                        </div>
-                        <div class="col-12">
-                            <input type="number" class="form-control" id="edit-amount" name="amount" placeholder="Amount" step="0.01" required>
-                        </div>
-                        <div class="col-12">
-                            <input type="text" class="form-control" id="edit-category" name="category" placeholder="Category" required>
-                        </div>
-                        <div class="col-12">
-                            <select class="form-select" id="edit-transaction-type" name="transaction_type" required>
-                                <option value="">Select Transaction Type</option>
-                                <option value="income">Income</option>
-                                <option value="expense">Expense</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="edit-essential-expense" name="essential_expense">
-                                <label class="form-check-label" for="edit-essential-expense">Essential Expense</label>
+    <main id="main-content" class="container pb-4">
+        <section class="mb-4" aria-labelledby="analytics-heading">
+            <h2 id="analytics-heading" class="visually-hidden">Análises Financeiras</h2>
+            <div class="row">
+                <article class="col-md-6 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title h5">Receitas vs Despesas</h3>
+                            <div role="img" aria-label="Gráfico de barras comparando receitas, despesas e despesas essenciais">
+                                <canvas id="incomeExpenseChart" aria-describedby="income-expense-desc"></canvas>
+                            </div>
+                            <div id="income-expense-desc" class="visually-hidden">
+                                Gráfico de barras comparando receita total, despesa total e despesas essenciais
                             </div>
                         </div>
-                        <div class="col-12">
-                            <input type="date" class="form-control" id="edit-date" name="date" required>
+                    </div>
+                </article>
+                <article class="col-md-6 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title h5">Despesas por Categoria</h3>
+                            <div role="img" aria-label="Gráfico de pizza mostrando distribuição de despesas por categoria">
+                                <canvas id="categoryChart" aria-describedby="category-chart-desc"></canvas>
+                            </div>
+                            <div id="category-chart-desc" class="visually-hidden">
+                                Gráfico de pizza mostrando a distribuição de despesas por diferentes categorias
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="mb-4" aria-labelledby="transactions-heading">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h2 id="transactions-heading" class="card-title h4 mb-0">Histórico de Transações</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" role="table" aria-label="Tabela de histórico de transações">
+                            <caption class="visually-hidden">
+                                Tabela mostrando todas as suas transações financeiras com detalhes incluindo descrição, valor, categoria, tipo, status de despesa essencial e data
+                            </caption>
+                            <thead class="table-success">
+                                <tr role="row">
+                                    <th scope="col" role="columnheader">Descrição</th>
+                                    <th scope="col" role="columnheader">Valor</th>
+                                    <th scope="col" role="columnheader">Categoria</th>
+                                    <th scope="col" role="columnheader">Tipo de Transação</th>
+                                    <th scope="col" role="columnheader">Despesa Essencial</th>
+                                    <th scope="col" role="columnheader">Data</th>
+                                    <th scope="col" role="columnheader" class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody role="rowgroup"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section aria-labelledby="add-transaction-heading">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h2 id="add-transaction-heading" class="card-title h4 mb-0">Adicionar Nova Transação</h2>
+                </div>
+                <div class="card-body">
+                    <form id="create-transaction-form" class="row g-3" novalidate aria-label="Formulário para adicionar nova transação">
+                        <fieldset class="col-12">
+                            <legend class="visually-hidden">Detalhes da Transação</legend>
+
+                            <div class="col-md-6">
+                                <label for="description" class="form-label">Descrição <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <input type="text" class="form-control" id="description" name="description"
+                                       placeholder="Digite a descrição da transação" required
+                                       aria-describedby="description-help">
+                                <div id="description-help" class="form-text">Breve descrição da transação</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="amount" class="form-label">Valor <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="amount" name="amount"
+                                           placeholder="0,00" step="0.01" min="0" required
+                                           aria-describedby="amount-help">
+                                </div>
+                                <div id="amount-help" class="form-text">Digite o valor da transação</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="category" class="form-label">Categoria <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <input type="text" class="form-control" id="category" name="category"
+                                       placeholder="Ex: Alimentação, Transporte, Salário" required
+                                       aria-describedby="category-help">
+                                <div id="category-help" class="form-text">Categorize sua transação</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="transaction-type" class="form-label">Tipo de Transação <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <select class="form-select" id="transaction-type" name="transaction_type" required
+                                        aria-describedby="type-help">
+                                    <option value="">Selecione o tipo de transação</option>
+                                    <option value="income">Receita</option>
+                                    <option value="expense">Despesa</option>
+                                </select>
+                                <div id="type-help" class="form-text">Escolha se é uma receita ou despesa</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="essential-expense" name="essential_expense">
+                                    <label class="form-check-label" for="essential-expense">
+                                        Despesa Essencial
+                                    </label>
+                                    <div class="form-text">Marque se é uma despesa necessária (aluguel, contas, etc.)</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="date" class="form-label">Data <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <input type="date" class="form-control" id="date" name="date" required
+                                       aria-describedby="date-help">
+                                <div id="date-help" class="form-text">Quando ocorreu esta transação?</div>
+                            </div>
+                        </fieldset>
+
+                        <div class="col-12 d-flex gap-2">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
+                                Criar Transação
+                            </button>
+                            <button type="button" id="refresh-btn" class="btn btn-primary">
+                                <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>
+                                Atualizar Transações
+                            </button>
                         </div>
                     </form>
                 </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal fade" id="editTransactionModal" tabindex="-1"
+         aria-labelledby="editTransactionModalLabel" aria-describedby="editTransactionModalDesc"
+         aria-hidden="true" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title h5" id="editTransactionModalLabel">Editar Transação</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Fechar modal de editar transação"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="editTransactionModalDesc" class="text-muted mb-3">
+                        Atualize os detalhes da sua transação abaixo.
+                    </p>
+                    <form id="edit-transaction-form" class="row g-3" novalidate aria-label="Formulário de editar transação">
+                        <input type="hidden" id="edit-transaction-id">
+
+                        <fieldset class="col-12">
+                            <legend class="visually-hidden">Detalhes da Transação</legend>
+
+                            <div class="col-12">
+                                <label for="edit-description" class="form-label">Descrição <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <input type="text" class="form-control" id="edit-description" name="description"
+                                       placeholder="Digite a descrição da transação" required
+                                       aria-describedby="edit-description-help">
+                                <div id="edit-description-help" class="form-text">Breve descrição da transação</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="edit-amount" class="form-label">Valor <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R$</span>
+                                    <input type="number" class="form-control" id="edit-amount" name="amount"
+                                           placeholder="0,00" step="0.01" min="0" required
+                                           aria-describedby="edit-amount-help">
+                                </div>
+                                <div id="edit-amount-help" class="form-text">Digite o valor da transação</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="edit-category" class="form-label">Categoria <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <input type="text" class="form-control" id="edit-category" name="category"
+                                       placeholder="Ex: Alimentação, Transporte, Salário" required
+                                       aria-describedby="edit-category-help">
+                                <div id="edit-category-help" class="form-text">Categorize sua transação</div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="edit-transaction-type" class="form-label">Tipo de Transação <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <select class="form-select" id="edit-transaction-type" name="transaction_type" required
+                                        aria-describedby="edit-type-help">
+                                    <option value="">Selecione o tipo de transação</option>
+                                    <option value="income">Receita</option>
+                                    <option value="expense">Despesa</option>
+                                </select>
+                                <div id="edit-type-help" class="form-text">Escolha se é uma receita ou despesa</div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="edit-essential-expense" name="essential_expense">
+                                    <label class="form-check-label" for="edit-essential-expense">
+                                        Despesa Essencial
+                                    </label>
+                                    <div class="form-text">Marque se é uma despesa necessária (aluguel, contas, etc.)</div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <label for="edit-date" class="form-label">Data <span class="text-danger" aria-label="obrigatório">*</span></label>
+                                <input type="date" class="form-control" id="edit-date" name="date" required
+                                       aria-describedby="edit-date-help">
+                                <div id="edit-date-help" class="form-text">Quando ocorreu esta transação?</div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="save-edit-btn">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1" aria-hidden="true"></i>
+                        Cancelar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="save-edit-btn">
+                        <i class="bi bi-check-circle me-1" aria-hidden="true"></i>
+                        Salvar Alterações
+                    </button>
                 </div>
             </div>
         </div>

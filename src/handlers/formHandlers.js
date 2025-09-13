@@ -32,14 +32,14 @@ export const handleCreateTransaction = async (event) => {
         const response = await createTransaction(transaction);
 
         if (response && response.success) {
-            showSuccess('Transaction created successfully!');
+            showSuccess('Transação criada com sucesso!');
             form.reset();
             await loadTransactions();
         } else {
-            showError(`Error: ${response.error || 'Failed to create transaction'}`);
+            showError(`Erro: ${response.error || 'Falha ao criar transação'}`);
         }
     } catch (error) {
         console.error('Error creating transaction:', error);
-        showError(`Error: ${error.message}`);
+        showError(`Erro: ${error.message}`);
     }
 }

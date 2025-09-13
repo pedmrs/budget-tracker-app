@@ -16,12 +16,18 @@ export const populateTransactionsTable = (transactions) => {
                 <td>${formatBoolean(transaction.essential_expense)}</td>
                 <td>${formatDate(transaction.date)}</td>
                 <td class="text-center">
-                    <div class="btn-group" role="group" aria-label="Transaction actions">
-                        <button class="btn btn-primary btn-sm edit-transaction" data-id="${transaction.id}" title="Edit">
-                            <i class="bi bi-pencil"></i>
+                    <div class="btn-group" role="group" aria-label="Ações para ${transaction.description || 'transação'}">
+                        <button class="btn btn-primary btn-sm edit-transaction"
+                                data-id="${transaction.id}"
+                                title="Editar ${transaction.description || 'transação'}"
+                                aria-label="Editar transação: ${transaction.description || 'transação'}">
+                            <i class="bi bi-pencil" aria-hidden="true"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm delete-transaction" data-id="${transaction.id}" title="Delete">
-                            <i class="bi bi-trash"></i>
+                        <button class="btn btn-danger btn-sm delete-transaction"
+                                data-id="${transaction.id}"
+                                title="Excluir ${transaction.description || 'transação'}"
+                                aria-label="Excluir transação: ${transaction.description || 'transação'}">
+                            <i class="bi bi-trash" aria-hidden="true"></i>
                         </button>
                     </div>
                 </td>
@@ -48,7 +54,7 @@ export const populateTransactionsTable = (transactions) => {
         const cell = document.createElement('td');
         cell.colSpan = 7;
         cell.className = 'text-center text-muted py-3';
-        cell.textContent = 'No transactions found';
+        cell.textContent = 'Nenhuma transação encontrada';
         row.appendChild(cell);
         tbody.appendChild(row);
     }

@@ -5,9 +5,9 @@ export const renderCharts = async (summaryData) => {
     new Chart(incomeExpenseCtx, {
         type: 'bar',
         data: {
-            labels: ['Income', 'Expenses', 'Essential Expenses'],
+            labels: ['Receitas', 'Despesas', 'Despesas Essenciais'],
             datasets: [{
-                label: 'Amount ($)',
+                label: 'Valor (R$)',
                 data: [
                     summaryData.income_total || 0,
                     summaryData.expense_total || 0,
@@ -22,14 +22,14 @@ export const renderCharts = async (summaryData) => {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        callback: (value) => '$' + value.toFixed(2)
+                        callback: (value) => 'R$ ' + value.toFixed(2)
                     }
                 }
             },
             plugins: {
                 tooltip: {
                     callbacks: {
-                        label: (context) => `$${context.raw.toFixed(2)}`
+                        label: (context) => `R$ ${context.raw.toFixed(2)}`
                     }
                 }
             }
@@ -57,13 +57,13 @@ export const renderCharts = async (summaryData) => {
                         label: (context) => {
                             const label = context.label || '';
                             const value = context.raw.toFixed(2);
-                            return `${label}: $${value}`;
+                            return `${label}: R$ ${value}`;
                         }
                     }
                 },
                 title: {
                     display: true,
-                    text: 'Total Expenses by Category'
+                    text: 'Total de Despesas por Categoria'
                 }
             }
         }

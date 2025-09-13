@@ -12,7 +12,7 @@ export const handleEditTransaction = async (transactionId) => {
         const response = await fetchTransactionById(transactionId);
 
         if (!response.success || !response.data) {
-            showError('Failed to load transaction data');
+            showError('Falha ao carregar dados da transação');
             return;
         }
 
@@ -30,7 +30,7 @@ export const handleEditTransaction = async (transactionId) => {
         modal.show();
     } catch (error) {
         console.error('Error loading transaction:', error);
-        showError(`Error: ${error.message}`);
+        showError(`Erro: ${error.message}`);
     }
 }
 
@@ -55,19 +55,19 @@ export const handleSaveEdit = async () => {
             const modal = bootstrap.Modal.getInstance(document.getElementById('editTransactionModal'));
             modal.hide();
 
-            showSuccess('Transaction updated successfully!');
+            showSuccess('Transação atualizada com sucesso!');
             await loadTransactions();
         } else {
-            showError(`Error: ${response.error || 'Failed to update transaction'}`);
+            showError(`Erro: ${response.error || 'Falha ao atualizar transação'}`);
         }
     } catch (error) {
         console.error('Error updating transaction:', error);
-        showError(`Error: ${error.message}`);
+        showError(`Erro: ${error.message}`);
     }
 }
 
 export const handleDeleteTransaction = async (transactionId) => {
-    if (!confirm('Are you sure you want to delete this transaction?')) {
+    if (!confirm('Tem certeza que deseja excluir esta transação?')) {
         return;
     }
 
@@ -75,13 +75,13 @@ export const handleDeleteTransaction = async (transactionId) => {
         const response = await deleteTransaction(transactionId);
 
         if (response && response.success) {
-            showSuccess('Transaction deleted successfully!');
+            showSuccess('Transação excluída com sucesso!');
             await loadTransactions();
         } else {
-            showError(`Error: ${response.error || 'Failed to delete transaction'}`);
+            showError(`Erro: ${response.error || 'Falha ao excluir transação'}`);
         }
     } catch (error) {
         console.error('Error deleting transaction:', error);
-        showError(`Error: ${error.message}`);
+        showError(`Erro: ${error.message}`);
     }
 }

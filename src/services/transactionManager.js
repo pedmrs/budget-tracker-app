@@ -12,9 +12,9 @@ export const loadTransactions = async () => {
         if (transactionsResponse && transactionsResponse.success && transactionsResponse.data) {
             populateTransactionsTable(transactionsResponse.data);
         } else if (transactionsResponse && transactionsResponse.success === false) {
-            showTableError(`API Error: ${transactionsResponse.error}`);
+            showTableError(`Erro da API: ${transactionsResponse.error}`);
         } else {
-            showTableError('Unexpected response format from API');
+            showTableError('Não foi possível ');
         }
 
         if (summaryResponse && summaryResponse.success && summaryResponse.data) {
@@ -28,6 +28,6 @@ export const loadTransactions = async () => {
             message: error.message,
             stack: error.stack
         });
-        showTableError(`Error loading transactions: ${error.message}. Please check if the API is running on http://localhost:5000`);
+        showTableError(`Erro ao carregar transações: ${error.message}. Verifique se a API está rodando em http://localhost:5000`);
     }
 }
