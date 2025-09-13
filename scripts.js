@@ -24,17 +24,28 @@ export const populateTransactionsTable = (transactions) => {
                 <td>${transaction.transaction_type || 'N/A'}</td>
                 <td>${transaction.essential_expense ? 'Yes' : 'No'}</td>
                 <td>${transaction.date || 'N/A'}</td>
-                <td>
-                    <button class="btn btn-danger btn-sm delete-transaction" data-id="${transaction.id}">
-                        <i class="bi bi-trash"></i>
-                    </button>
+                <td class="text-center">
+                    <div class="btn-group" role="group" aria-label="Transaction actions">
+                        <button class="btn btn-primary btn-sm edit-transaction" data-id="${transaction.id}" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-transaction" data-id="${transaction.id}" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
                 </td>
             `;
             tbody.appendChild(row);
 
             const deleteButton = row.querySelector('.delete-transaction');
+            const editButton = row.querySelector('.edit-transaction');
+
             if (deleteButton) {
                 deleteButton.addEventListener('click', () => handleDeleteTransaction(transaction.id));
+            }
+
+            if (editButton) {
+                editButton.addEventListener('click', () => handleEditTransaction(transaction.id));
             }
         });
     } else {
@@ -174,6 +185,88 @@ export const loadTransactions = async () => {
     }
 }
 
+export const editTransaction = async (transactionId, updatedData) => {
+    const response = await fetch(`http://localhost:5000/transactions/${transactionId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+    });
+    const data = await response.json();
+    return data;
+}
+
+export const handleEditTransaction = async (transactionId) => {
+    try {
+        const response = await fetch(`http://localhost:5000/transactions/${transactionId}`);
+        const data = await response.json();
+
+        if (!data.success || !data.data) {
+            showMessage('Failed to load transaction data', 'error');
+            return;
+        }
+
+        const transaction = data.data;
+
+        document.getElementById('edit-transaction-id').value = transaction.id;
+        document.getElementById('edit-description').value = transaction.description || '';
+        document.getElementById('edit-amount').value = transaction.amount || '';
+        document.getElementById('edit-category').value = transaction.category || '';
+        document.getElementById('edit-transaction-type').value = transaction.transaction_type || '';
+        document.getElementById('edit-essential-expense').checked = transaction.essential_expense || false;
+
+        if (transaction.date) {
+            const date = new Date(transaction.date * 1000);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formattedDate = `${year}-${month}-${day}`;
+            document.getElementById('edit-date').value = formattedDate;
+        } else {
+            document.getElementById('edit-date').value = new Date().toISOString().split('T')[0];
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('editTransactionModal'));
+        modal.show();
+    } catch (error) {
+        console.error('Error loading transaction:', error);
+        showMessage(`Error: ${error.message}`, 'error');
+    }
+}
+
+export const handleSaveEdit = async () => {
+    const transactionId = document.getElementById('edit-transaction-id').value;
+    const dateString = document.getElementById('edit-date').value;
+    const dateTimestamp = Math.floor(new Date(dateString + 'T00:00:00.000Z').getTime() / 1000);
+
+    const updatedData = {
+        description: document.getElementById('edit-description').value,
+        amount: parseFloat(document.getElementById('edit-amount').value),
+        category: document.getElementById('edit-category').value,
+        transaction_type: document.getElementById('edit-transaction-type').value,
+        essential_expense: document.getElementById('edit-essential-expense').checked,
+        date: dateTimestamp
+    };
+
+    try {
+        const response = await editTransaction(transactionId, updatedData);
+
+        if (response && response.success) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('editTransactionModal'));
+            modal.hide();
+
+            showMessage('Transaction updated successfully!', 'success');
+            await loadTransactions();
+        } else {
+            showMessage(`Error: ${response.error || 'Failed to update transaction'}`, 'error');
+        }
+    } catch (error) {
+        console.error('Error updating transaction:', error);
+        showMessage(`Error: ${error.message}`, 'error');
+    }
+}
+
 export const deleteTransaction = async (transactionId) => {
     const response = await fetch(`http://localhost:5000/transactions/${transactionId}`, {
         method: 'DELETE',
@@ -273,6 +366,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const form = document.querySelector('#create-transaction-form');
     const refreshBtn = document.querySelector('#refresh-btn');
+    const saveEditBtn = document.querySelector('#save-edit-btn');
 
     if (form) {
         form.addEventListener('submit', handleCreateTransaction);
@@ -280,5 +374,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (refreshBtn) {
         refreshBtn.addEventListener('click', loadTransactions);
+    }
+
+    if (saveEditBtn) {
+        saveEditBtn.addEventListener('click', handleSaveEdit);
     }
 });
