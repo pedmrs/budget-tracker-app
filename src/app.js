@@ -1,27 +1,25 @@
 import { loadTransactions } from './services/transactionManager.js';
-import { handleCreateTransaction } from './handlers/formHandlers.js';
-import { handleSaveEdit } from './handlers/transactionHandlers.js';
+import { openTransactionModal, handleSaveTransaction } from './handlers/formHandlers.js';
 
 const initializeApp = () => {
     loadTransactions();
 
-    const form = document.querySelector('#create-transaction-form');
     const refreshBtn = document.querySelector('#refresh-btn');
-    const saveEditBtn = document.querySelector('#save-edit-btn');
-
-    if (form) {
-        form.addEventListener('submit', (event) => {
-            handleCreateTransaction(event);
-        });
-    }
+    const addTransactionBtn = document.querySelector('#add-transaction-btn');
+    const saveTransactionBtn = document.querySelector('#save-transaction-btn');
 
     if (refreshBtn) {
         refreshBtn.addEventListener('click', loadTransactions);
     }
 
-    if (saveEditBtn) {
-        saveEditBtn.addEventListener('click', handleSaveEdit);
+    if (addTransactionBtn) {
+        addTransactionBtn.addEventListener('click', () => openTransactionModal('add'));
+    }
+
+    if (saveTransactionBtn) {
+        saveTransactionBtn.addEventListener('click', handleSaveTransaction);
     }
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
+

@@ -1,8 +1,20 @@
+let incomeExpenseChart = null;
+let categoryChart = null;
+
 export const renderCharts = async (summaryData) => {
     const incomeExpenseCtx = document.getElementById('incomeExpenseChart').getContext('2d');
     const categoryCtx = document.getElementById('categoryChart').getContext('2d');
 
-    new Chart(incomeExpenseCtx, {
+    if (incomeExpenseChart) {
+        incomeExpenseChart.destroy();
+        incomeExpenseChart = null;
+    }
+    if (categoryChart) {
+        categoryChart.destroy();
+        categoryChart = null;
+    }
+
+    incomeExpenseChart = new Chart(incomeExpenseCtx, {
         type: 'bar',
         data: {
             labels: ['Receitas', 'Despesas', 'Despesas Essenciais'],
@@ -37,7 +49,7 @@ export const renderCharts = async (summaryData) => {
     });
 
     const categoryData = summaryData.expense_by_category || {};
-    new Chart(categoryCtx, {
+    categoryChart = new Chart(categoryCtx, {
         type: 'pie',
         data: {
             labels: Object.keys(categoryData),
