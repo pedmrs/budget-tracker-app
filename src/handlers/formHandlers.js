@@ -69,7 +69,12 @@ export const openTransactionModal = (mode = 'add', transactionId = null) => {
         transactionIdField.value = transactionId;
     }
 
-    const bootstrapModal = new bootstrap.Modal(modal);
+    let bootstrapModal = bootstrap.Modal.getInstance(modal);
+    if (bootstrapModal) {
+        bootstrapModal.dispose();
+    }
+    
+    bootstrapModal = new bootstrap.Modal(modal);
     bootstrapModal.show();
 }
 
