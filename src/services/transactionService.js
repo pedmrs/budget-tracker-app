@@ -1,13 +1,32 @@
+import { convertDateToTimestamp } from '../utils/formatters.js';
+
 const API_BASE_URL = 'http://localhost:5000';
 
-export const fetchAllTransactions = async () => {
-    const response = await fetch(`${API_BASE_URL}/transactions`);
+const formatDateFilter = (dateFilter) => {
+    const params = new URLSearchParams();
+    if (dateFilter.startDate) {
+        const startTimestamp = convertDateToTimestamp(dateFilter.startDate);
+        params.append('start_date', startTimestamp);
+    }
+    if (dateFilter.endDate) {
+        const endTimestamp = convertDateToTimestamp(dateFilter.endDate);
+        params.append('end_date', endTimestamp);
+    }
+    return params.toString();
+}
+
+export const fetchAllTransactions = async (dateFilter = null) => {
+    const params = formatDateFilter(dateFilter);
+    const url = `${API_BASE_URL}/transactions?${params}`;
+    const response = await fetch(url);
     const data = await response.json();
     return data;
 }
 
-export const fetchTransactionSummary = async () => {
-    const response = await fetch(`${API_BASE_URL}/transactions/summary`);
+export const fetchTransactionSummary = async (dateFilter = null) => {
+    const params = formatDateFilter(dateFilter);
+    const url = `${API_BASE_URL}/transactions/summary?${params}`;
+    const response = await fetch(url);
     const data = await response.json();
     return data;
 }

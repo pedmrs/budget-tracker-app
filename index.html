@@ -55,17 +55,47 @@
 
         <section class="mb-4" aria-labelledby="transactions-heading">
             <div class="card shadow-sm">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h2 id="transactions-heading" class="card-title h4 mb-0">Histórico de Transações</h2>
-                    <div class="btn-group" role="group">
-                        <button type="button" id="refresh-btn" class="btn btn-primary">
-                            <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>
-                            Atualizar
-                        </button>
-                        <button type="button" class="btn btn-success" id="add-transaction-btn" data-bs-toggle="modal" data-bs-target="#transactionModal">
-                            <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
-                            Adicionar Transação
-                        </button>
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 id="transactions-heading" class="card-title h4 mb-0">Histórico de Transações</h2>
+                        <div class="btn-group" role="group">
+                            <button type="button" id="refresh-btn" class="btn btn-primary">
+                                <i class="bi bi-arrow-clockwise me-1" aria-hidden="true"></i>
+                                Atualizar
+                            </button>
+                            <button type="button" class="btn btn-success" id="add-transaction-btn" data-bs-toggle="modal" data-bs-target="#transactionModal">
+                                <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>
+                                Adicionar Transação
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="start-date" class="form-label">Data Inicial</label>
+                            <input type="date" class="form-control" id="start-date" aria-describedby="start-date-help">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="end-date" class="form-label">Data Final</label>
+                            <input type="date" class="form-control" id="end-date" aria-describedby="end-date-help">
+                        </div>
+                        <div class="col-md-3 d-flex flex-column justify-content-end">
+                            <div class="d-flex gap-2">
+                                <button type="button" id="apply-filter-btn" class="btn btn-outline-primary">
+                                    <i class="bi bi-funnel me-1" aria-hidden="true"></i>
+                                    Filtrar
+                                </button>
+                                <button type="button" id="clear-filter-btn" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle me-1" aria-hidden="true"></i>
+                                    Limpar
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column justify-content-end">
+                            <div>
+                                <small class="text-muted" id="filter-status">Filtro: Mês atual</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">

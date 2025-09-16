@@ -1,12 +1,14 @@
 import { fetchAllTransactions, fetchTransactionSummary } from './transactionService.js';
 import { populateTransactionsTable, showTableError } from '../components/transactionTable.js';
 import { renderCharts } from '../components/charts.js';
+import { getCurrentDateFilter } from '../app.js';
 
 export const loadTransactions = async () => {
     try {
+        const dateFilter = getCurrentDateFilter();
         const [transactionsResponse, summaryResponse] = await Promise.all([
-            fetchAllTransactions(),
-            fetchTransactionSummary()
+            fetchAllTransactions(dateFilter),
+            fetchTransactionSummary(dateFilter)
         ]);
 
         if (transactionsResponse && transactionsResponse.success && transactionsResponse.data) {

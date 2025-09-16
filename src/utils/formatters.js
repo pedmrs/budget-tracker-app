@@ -6,7 +6,6 @@ export const formatBoolean = (value) => {
     return value ? 'Yes' : 'No';
 }
 
-
 export const formatDate = (timestamp) => {
     if (!timestamp) return 'N/A';
 
@@ -31,4 +30,12 @@ export const convertDateToTimestamp = (dateString) => {
     const [year, month, day] = dateString.split('-').map(Number);
     const localDate = new Date(year, month - 1, day, 12, 0, 0);
     return Math.floor(localDate.getTime() / 1000);
+}
+
+export const formatDateStringForDisplay = (dateString) => {
+    if (!dateString) return 'N/A';
+
+    const [year, month, day] = dateString.split('-').map(Number);
+    const date = new Date(year, month - 1, day);
+    return date.toLocaleDateString('pt-BR');
 }
