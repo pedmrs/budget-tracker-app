@@ -44,6 +44,18 @@ export const handleCreateTransaction = async (event) => {
     }
 }
 
+const handleTransactionTypeChange = (event) => {
+    const transactionType = event.target.value;
+    const essentialExpenseCheckbox = document.getElementById('transaction-essential-expense');
+
+    if (transactionType === 'income') {
+        essentialExpenseCheckbox.checked = false;
+        essentialExpenseCheckbox.disabled = true;
+    } else {
+        essentialExpenseCheckbox.disabled = false;
+    }
+}
+
 export const openTransactionModal = (mode = 'add', transactionId = null) => {
     const modal = document.getElementById('transactionModal');
     const modalTitle = document.getElementById('transactionModalLabel');
@@ -52,9 +64,14 @@ export const openTransactionModal = (mode = 'add', transactionId = null) => {
     const saveBtnText = document.getElementById('save-btn-text');
     const form = document.getElementById('transaction-form');
     const transactionIdField = document.getElementById('transaction-id');
+    const transactionType = document.getElementById('transaction-type');
+
+    transactionType.addEventListener('change', handleTransactionTypeChange);
 
     form.reset();
     transactionIdField.value = '';
+
+    handleTransactionTypeChange({ target: transactionType });
 
     if (mode === 'add') {
         modalTitle.textContent = 'Adicionar Nova Transação';
@@ -73,7 +90,7 @@ export const openTransactionModal = (mode = 'add', transactionId = null) => {
     if (bootstrapModal) {
         bootstrapModal.dispose();
     }
-    
+
     bootstrapModal = new bootstrap.Modal(modal);
     bootstrapModal.show();
 }
