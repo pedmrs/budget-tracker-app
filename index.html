@@ -24,7 +24,7 @@
         <section class="mb-4" aria-labelledby="analytics-heading">
             <h2 id="analytics-heading" class="visually-hidden">Análises Financeiras</h2>
             <div class="row">
-                <article class="col-md-6 mb-3">
+                <article class="col-md-4 mb-3">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title h5">Receitas vs Despesas</h3>
@@ -37,7 +37,20 @@
                         </div>
                     </div>
                 </article>
-                <article class="col-md-6 mb-3">
+                <article class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title h5">Despesas Essenciais vs Não Essenciais</h3>
+                            <div role="img" aria-label="Gráfico de barras comparando despesas essenciais e não essenciais">
+                                <canvas id="expenseTypeChart" aria-describedby="expense-type-desc"></canvas>
+                            </div>
+                            <div id="expense-type-desc" class="visually-hidden">
+                                Gráfico de barras comparando o total de despesas essenciais e não essenciais
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article class="col-md-4 mb-3">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
                             <h3 class="card-title h5">Despesas por Categoria</h3>

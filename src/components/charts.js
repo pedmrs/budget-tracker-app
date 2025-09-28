@@ -1,13 +1,19 @@
 let incomeExpenseChart = null;
+let expenseTypeChart = null;
 let categoryChart = null;
 
 export const renderCharts = async (summaryData) => {
     const incomeExpenseCtx = document.getElementById('incomeExpenseChart').getContext('2d');
+    const expenseTypeCtx = document.getElementById('expenseTypeChart').getContext('2d');
     const categoryCtx = document.getElementById('categoryChart').getContext('2d');
 
     if (incomeExpenseChart) {
         incomeExpenseChart.destroy();
         incomeExpenseChart = null;
+    }
+    if (expenseTypeChart) {
+        expenseTypeChart.destroy();
+        expenseTypeChart = null;
     }
     if (categoryChart) {
         categoryChart.destroy();
@@ -25,6 +31,44 @@ export const renderCharts = async (summaryData) => {
                     summaryData.expense_total || 0
                 ],
                 backgroundColor: ['#4CAF50', '#f44336'],
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: (value) => 'R$ ' + value.toFixed(2)
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => `R$ ${context.raw.toFixed(2)}`
+                    }
+                }
+            }
+        }
+    });
+
+    const nonEssentialExpenses = (summaryData.expense_total || 0) - (summaryData.essential_expense_total || 0);
+
+    expenseTypeChart = new Chart(expenseTypeCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Essenciais', 'Não Essenciais'],
+            datasets: [{
+                label: 'Valor (R$)',
+                data: [
+                    summaryData.essential_expense_total || 0,
+                    nonEssentialExpenses
+                ],
+                backgroundColor: ['#2196F3', '#FF9800']
             }]
         },
         options: {
