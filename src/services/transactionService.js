@@ -2,8 +2,9 @@ import { convertDateToTimestamp } from '../utils/formatters.js';
 
 const API_BASE_URL = 'http://localhost:5000';
 
-const formatDateFilter = (dateFilter) => {
+const formatRequestParams = (dateFilter, paginationParams = null) => {
     const params = new URLSearchParams();
+
     if (dateFilter.startDate) {
         const startTimestamp = convertDateToTimestamp(dateFilter.startDate);
         params.append('start_date', startTimestamp);
@@ -12,19 +13,28 @@ const formatDateFilter = (dateFilter) => {
         const endTimestamp = convertDateToTimestamp(dateFilter.endDate);
         params.append('end_date', endTimestamp);
     }
+
+    if (paginationParams) {
+        if (paginationParams.limit) {
+            params.append('limit', paginationParams.limit);
+        }
+        if (typeof paginationParams.offset === 'number') {
+            params.append('offset', paginationParams.offset);
+        }
+    }
+
     return params.toString();
 }
 
-export const fetchAllTransactions = async (dateFilter = null) => {
-    const params = formatDateFilter(dateFilter);
+export const fetchAllTransactions = async (dateFilter = null, paginationParams = null) => {
+    const params = formatRequestParams(dateFilter, paginationParams);
     const url = `${API_BASE_URL}/transactions?${params}`;
     const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    return response.json();
 }
 
 export const fetchTransactionSummary = async (dateFilter = null) => {
-    const params = formatDateFilter(dateFilter);
+    const params = formatRequestParams(dateFilter);
     const url = `${API_BASE_URL}/transactions/summary?${params}`;
     const response = await fetch(url);
     const data = await response.json();
