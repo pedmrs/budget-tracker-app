@@ -39,6 +39,9 @@ export const renderCharts = async (summaryData) => {
                 }
             },
             plugins: {
+                legend: {
+                    display: false
+                },
                 tooltip: {
                     callbacks: {
                         label: (context) => `R$ ${context.raw.toFixed(2)}`
