@@ -7,9 +7,9 @@ Uma app para controle de orçamento pessoal.
 ```
 budget-tracker-app/
 ├── src/
-│   ├── components/          # Componentes de UI. Lógica de renderização e interações do usuário
-│   ├── services/            # Chamadas de API e regras de negócio. Como se comunicar com a API e o que fazer com os dados
-│   ├── handlers/            # Handlers de eventos. Processsar eventos do usuário e envios de formulários
+│   ├── components/          # Renderização dos componentes.
+│   ├── services/            # Chamadas de API e regras de negócio
+│   ├── handlers/            # Handlers de eventos
 │   ├── utils/               # Funções utilitárias
 │   ├── styles/              # Arquivos CSS
 │   ├── app.js               # Entrypoint da aplicação
@@ -18,26 +18,21 @@ budget-tracker-app/
 
 ## Dependências
 
-A app utiliza links CDN para algumas bibliotecas externas:
+Uma conexão com a internet é necessária pois a app utiliza links CDN para algumas bibliotecas externas:
 - Bootstrap 5.3.0 (CSS & JS)
 - Bootstrap Icons 1.11.1
 - Chart.js
 
-Uma conexão com a internet é necessária.
-
-## API
-
-O aplicativo espera uma API rodando em `http://localhost:5000` com os seguintes endpoints:
-
-- `GET /transactions` - Buscar todas as transações
-- `GET /transactions/summary` - Buscar resumo das transações
-- `GET /transactions/:id` - Buscar transação por ID
-- `POST /transactions` - Criar nova transação
-- `PUT /transactions/:id` - Atualizar transação
-- `DELETE /transactions/:id` - Deletar transação
+Além disso, a aplicação depende da [Budget Tracker API](https://github.com/pedmrs/budget-tracker-api) que deve estar em execução em `http://localhost:5000`. A app faz uso dos seguintes endpoints:
+- `GET /transactions` - Retorna a lista completa de transações
+- `GET /transactions/:id` - Retorna os detalhes de uma transação específica
+- `POST /transactions` - Registra uma nova transação
+- `PUT /transactions/:id` - Atualiza os dados de uma transação existente
+- `DELETE /transactions/:id` - Remove uma transação do sistema
+- `GET /transactions/summary` - Retorna um resumo consolidado das transações, incluindo totais por categoria e balanço geral
 
 ## Como executar
 
-1. Certifique-se de que sua API backend está rodando em `http://localhost:5000`
+1. Certifique-se de que a [Budget Tracker API](https://github.com/pedmrs/budget-tracker-api) está rodando em `http://localhost:5000`
 2. Abra o arquivo `index.html` em um navegador web
-3. A app irá carregar e renderizar as transações
+3. A app irá carregar e renderizar as transações existentes de acordo com o filtro selecionado
