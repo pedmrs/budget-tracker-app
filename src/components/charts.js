@@ -17,15 +17,14 @@ export const renderCharts = async (summaryData) => {
     incomeExpenseChart = new Chart(incomeExpenseCtx, {
         type: 'bar',
         data: {
-            labels: ['Receitas', 'Despesas', 'Despesas Essenciais'],
+            labels: ['Receitas', 'Despesas'],
             datasets: [{
                 label: 'Valor (R$)',
                 data: [
                     summaryData.income_total || 0,
-                    summaryData.expense_total || 0,
-                    summaryData.essential_expense_total || 0
+                    summaryData.expense_total || 0
                 ],
-                backgroundColor: ['#4CAF50', '#f44336', '#FFC107'],
+                backgroundColor: ['#4CAF50', '#f44336'],
             }]
         },
         options: {
