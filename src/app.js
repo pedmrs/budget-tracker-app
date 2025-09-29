@@ -73,7 +73,7 @@ const initializeApp = () => {
     const clearFilterBtn = document.querySelector('#clear-filter-btn');
 
     if (refreshBtn) {
-        refreshBtn.addEventListener('click', loadTransactions);
+        refreshBtn.addEventListener('click', () => loadTransactions());
     }
 
     if (addTransactionBtn) {
