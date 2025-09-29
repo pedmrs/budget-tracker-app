@@ -8,12 +8,14 @@ let currentDateFilter = {
 };
 
 const initializeDateFilter = () => {
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    if (!currentDateFilter.startDate || !currentDateFilter.endDate) {
+        const now = new Date();
+        const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+        const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
-    currentDateFilter.startDate = startOfMonth.toISOString().split('T')[0];
-    currentDateFilter.endDate = endOfMonth.toISOString().split('T')[0];
+        currentDateFilter.startDate = startOfMonth.toISOString().split('T')[0];
+        currentDateFilter.endDate = endOfMonth.toISOString().split('T')[0];
+    }
 
     document.getElementById('start-date').value = currentDateFilter.startDate;
     document.getElementById('end-date').value = currentDateFilter.endDate;
