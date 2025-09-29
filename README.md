@@ -6,14 +6,13 @@ Uma app para controle de orçamento pessoal.
 
 ```
 budget-tracker-app/
-├── src/
-│   ├── components/          # Renderização dos componentes.
-│   ├── services/            # Chamadas de API e regras de negócio
-│   ├── handlers/            # Handlers de eventos
-│   ├── utils/               # Funções utilitárias
-│   ├── styles/              # Arquivos CSS
-│   ├── app.js               # Entrypoint da aplicação
-└── index.html               # HTML principal
+├── index.html              # HTML principal
+├── js/                     # Arquivos JavaScript
+│   ├── components/         # Componentes da interface
+│   ├── services/           # Serviços e chamadas de API
+│   ├── handlers/           # Handlers de eventos
+│   └── utils/              # Funções utilitárias
+└── styles.css              # Estilos da aplicação
 ```
 
 ## Dependências
