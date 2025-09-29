@@ -1,4 +1,4 @@
-import { formatCurrency, formatDate, formatBoolean } from '../utils/formatters.js';
+import { formatCurrency, formatDate, formatBoolean, formatTransactionType } from '../utils/formatters.js';
 import { handleDeleteTransaction, handleEditTransaction } from '../handlers/transactionHandlers.js';
 
 export const populateTransactionsTable = (transactions, paginationData = null) => {
@@ -17,7 +17,7 @@ export const populateTransactionsTable = (transactions, paginationData = null) =
                 <td>${transaction.description || 'N/A'}</td>
                 <td>${formatCurrency(transaction.amount)}</td>
                 <td>${transaction.category || 'N/A'}</td>
-                <td>${transaction.transaction_type || 'N/A'}</td>
+                <td>${formatTransactionType(transaction.transaction_type) || 'N/A'}</td>
                 <td>${formatBoolean(transaction.essential_expense)}</td>
                 <td>${formatDate(transaction.date)}</td>
                 <td class="text-center">

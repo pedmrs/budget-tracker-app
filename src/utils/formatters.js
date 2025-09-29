@@ -1,9 +1,13 @@
 export const formatCurrency = (amount) => {
-    return `$${amount || '0.00'}`;
+    return `R$${amount || '0.00'}`;
 }
 
 export const formatBoolean = (value) => {
-    return value ? 'Yes' : 'No';
+    return value ? 'Sim' : 'Não';
+}
+
+export const formatTransactionType = (type) => {
+    return type === 'income' ? 'Receita' : 'Despesa';
 }
 
 export const formatDate = (timestamp) => {
